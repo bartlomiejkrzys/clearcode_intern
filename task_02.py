@@ -68,29 +68,29 @@ except IndexError as e:
     print("Script requires input filepath as a mandatory argument!")
     exit()
 else:
-    # Ustawiamy defaultowy separator danych
+    # Set default separator
     data_sep = ','
-    # Oddzielamy sciezke pliku od nazwy pliku
+    # Split filepath from filename
     path, filename = os.path.split(filepath)
-    # Dane wyjsciowe zapisywac bedziemy do pliku z ta sama nazwa, w rozszerzeniu .out
+    # Output data will be saved to a file with the same name and path, but .out extension
     outpath = os.path.join(path, filename + '.out')    
     with open(filepath, 'r') as infile, open(outpath, 'w') as outfile:
-        # Tworzymy iterator linii
+        # Create an line iterator
         fl_iter = iter(infile.readlines())
         try:
-            # Dopoki mozna odczytywac linie
+            # Read line by line
             while True:
                 array = []
-                # Odczytaj informacje o wielkosci macierzy
+                # Read info about matrix size
                 size = int(next(fl_iter))
-                # Zbierz kolejnych SIZE-rzedow, zapisujac je do array
+                # Take next SIZE-rows and add it to the matrix
                 for _ in range(size):
                     array.append(list(map(int, next(fl_iter).split(data_sep))))
-                # Uruchom funkcje, za docelowe wspolrzedne wybierajac prawy, dolny rog
+                # Run function with created matrix, and set destination point to the right bottom corner
                 result = find_dynamic(array, dest_r = len(array) - 1, dest_c = len(array) - 1)
-                # Wynik zapisz w pliku wyjsciowym
+                # Save data in output file
                 outfile.write(str(result) + '\n')
-        # Kiedy iterator skonczy prace, zwroci StopIteration error, ktory przejmujemy
+        # When iterator ends, catch StopIteration error and tell the user that, the script was sucesfully ended
         except StopIteration as e:
             print("Zakonczono powodzeniem.")
             
